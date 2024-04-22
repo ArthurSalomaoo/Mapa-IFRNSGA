@@ -20,4 +20,3 @@ jobs:
           npm install
           npm install maplibre-gl
           npm run build
-          npm run ls la
