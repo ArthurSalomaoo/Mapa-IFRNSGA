@@ -14,9 +14,9 @@ jobs:
           node-version: '12'
       - name: setup git auth
         env:
-          email: '<seu-email>'
-          username: '<seu-usuario>'
-          access_token: '<seu-access-token>'
+          email: 'artursalomao004@gmail.com'
+          username: 'ArthurSalomaoo'
+          access_token: 'vuejs acess token'
         run: |
           git config --global credential.helper store
           echo "https://${access_token}:x-oauth-basic@github.com" > ~/.git-credentials
@@ -25,6 +25,7 @@ jobs:
       - name: deploy to gh-pages
         run: |
           npm i
+          npm install maplibre-gl
           NODE_ENV=production npm run build
           cd dist
           git init
