@@ -33,7 +33,7 @@ jobs:
         run: |
           npm install
           npm install maplibre-gl
-          npm install vue@latest @vue/compiler-sfc@latest # Instalação ou atualização do Vue.js e @vue/compiler-sfc
+          npm install vue@3 @vue/compiler-sfc@3 # Instalação específica do Vue.js e do compilador
 
       - name: Build
         run: |
