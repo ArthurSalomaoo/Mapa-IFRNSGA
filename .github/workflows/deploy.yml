@@ -1,33 +1,46 @@
 name: Deploy vue
+
 on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
         with:
           node-version: '12'
+
       - name: setup git auth
         env:
           email: 'artursalomao004@gmail.com'
           username: 'ArthurSalomaoo'
-          access_token: 'vuejs acess token'
+          access_token: ${{ secrets.ACCESS_TOKEN }} # Substitua ACCESS_TOKEN pelo seu token de acesso do GitHub
         run: |
           git config --global credential.helper store
           echo "https://${access_token}:x-oauth-basic@github.com" > ~/.git-credentials
           git config --global user.email $email
           git config --global user.name $username
-      - name: deploy to gh-pages
+
+      - name: Install Dependencies
         run: |
-          npm i
+          npm install
           npm install maplibre-gl
-          NODE_ENV=production npm run build
-          cd dist
-          git init
-          git add -A
-          git commit -m "🚀 Deploy id ${GITHUB_RUN_ID}"
-          git push -f "https://github.com/${GITHUB_REPOSITORY}.git" main:gh-pages
+          npm install vue@latest @vue/compiler-sfc@latest # Instalação ou atualização do Vue.js e @vue/compiler-sfc
+
+      - name: Build
+        run: |
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACCESS_TOKEN }} # Substitua ACCESS_TOKEN pelo seu token de acesso do GitHub
+          publish_dir: ./dist
