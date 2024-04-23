@@ -1,19 +1,61 @@
-name: Build Vue
-on: [push]
+name: Deploy to Github Pages  # Define o nome do fluxo de trabalho das GitHub Actions.
+
+on:
+    push:
+        branches:
+            - main
+
 jobs:
-  build_vue:
-    runs-on: ubuntu-latest
-    name: Build Vue
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js '16.x'
-      uses: actions/setup-node@v2
-      with:
-        node-version: "16.x"
-        cache: "npm"
-    - id: Build-Vue
-      uses: SerhiiKa/VuePagesAction@1.0.4
-      with:
-        username: 'ArthurSalomaoo'
-        reponame: 'teste1'
-        token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+    build:
+      name: Build  # Define o nome do trabalho de compilação.
+      runs-on: ubuntu-latest  # Especifica o sistema operacional para o trabalho.
+
+      steps:
+        - name: Checkout Repo  # Faz checkout do repositório.
+          uses: actions/checkout@v4
+
+        - name: Create Node Environment  # Configura o ambiente Node.js.
+          uses: actions/setup-node@v4
+          with: 
+            node-version: 16.x
+
+        - name: Install Packages and Build Application  # Instala pacotes npm e compila a aplicação Vue.js.
+          run: |
+            npm ci
+            npm i
+            npm install maplibre-gl
+            npm run build
+
+        - name: Setup Pages  # Configura páginas para implantação.
+          id: pages
+          uses: actions/configure-pages@v3
+
+        - name: Build with Jekyll  # Compila a aplicação com Jekyll.
+          uses: actions/jekyll-build-pages@v1
+          with:
+            source: ./dist/
+            destination: ./_site
+
+        - name: Upload artifact  # Faz upload do artefato de compilação.
+          uses: actions/upload-pages-artifact@v2
+      
+    deploy:
+      name: Deploy Application  # Define o nome do trabalho de implantação.
+
+      # Adiciona uma dependência ao trabalho de compilação
+      needs: build  # Especifica que o trabalho de implantação depende da conclusão bem-sucedida do trabalho de compilação.
+
+      # Concede ao GITHUB_TOKEN as permissões necessárias para fazer uma implantação de Páginas
+      permissions:
+        pages: write      # Concede permissão de escrita para implantar nas Páginas.
+        id-token: write   # Concede permissão de escrita para verificar a fonte da implantação.
+
+      environment:
+        name: github-pages  # Especifica o ambiente para implantação.
+        url: ${{ steps.deployment.outputs.page_url }}  # Recupera a URL de implantação do passo de implantação anterior.
+
+      runs-on: ubuntu-latest  # Especifica o sistema operacional para o trabalho de implantação.
+      steps:
+        - name: Deploy to GitHub Pages  # Implanta a aplicação nas GitHub Pages.
+          id: deployment
+          uses: actions/deploy-pages@v2  # Especifica a versão da ação de implantação.
