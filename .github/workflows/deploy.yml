@@ -1,61 +1,51 @@
-name: Deploy to Github Pages  # Define o nome do fluxo de trabalho das GitHub Actions.
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
 
 on:
-    push:
-        branches:
-            - main
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ['main']
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
-    build:
-      name: Build  # Define o nome do trabalho de compilação.
-      runs-on: ubuntu-latest  # Especifica o sistema operacional para o trabalho.
-
-      steps:
-        - name: Checkout Repo  # Faz checkout do repositório.
-          uses: actions/checkout@v4
-
-        - name: Create Node Environment  # Configura o ambiente Node.js.
-          uses: actions/setup-node@v4
-          with: 
-            node-version: 16.x
-
-        - name: Install Packages and Build Application  # Instala pacotes npm e compila a aplicação Vue.js.
-          run: |
-            npm ci
-            npm i
-            npm install maplibre-gl
-            npm run build
-
-        - name: Setup Pages  # Configura páginas para implantação.
-          id: pages
-          uses: actions/configure-pages@v3
-
-        - name: Build with Jekyll  # Compila a aplicação com Jekyll.
-          uses: actions/jekyll-build-pages@v1
-          with:
-            source: ./dist/
-            destination: ./_site
-
-        - name: Upload artifact  # Faz upload do artefato de compilação.
-          uses: actions/upload-pages-artifact@v2
-      
-    deploy:
-      name: Deploy Application  # Define o nome do trabalho de implantação.
-
-      # Adiciona uma dependência ao trabalho de compilação
-      needs: build  # Especifica que o trabalho de implantação depende da conclusão bem-sucedida do trabalho de compilação.
-
-      # Concede ao GITHUB_TOKEN as permissões necessárias para fazer uma implantação de Páginas
-      permissions:
-        pages: write      # Concede permissão de escrita para implantar nas Páginas.
-        id-token: write   # Concede permissão de escrita para verificar a fonte da implantação.
-
-      environment:
-        name: github-pages  # Especifica o ambiente para implantação.
-        url: ${{ steps.deployment.outputs.page_url }}  # Recupera a URL de implantação do passo de implantação anterior.
-
-      runs-on: ubuntu-latest  # Especifica o sistema operacional para o trabalho de implantação.
-      steps:
-        - name: Deploy to GitHub Pages  # Implanta a aplicação nas GitHub Pages.
-          id: deployment
-          uses: actions/deploy-pages@v2  # Especifica a versão da ação de implantação.
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload dist folder
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
