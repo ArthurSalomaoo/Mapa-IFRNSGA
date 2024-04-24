@@ -71,37 +71,6 @@ export default {
           });
 
           //adiciona o nome a sala e se a sala não tiver o nome, ele adiciona o ref
-          if (sala.properties.name) {
-            this.map.addLayer({
-              id: `${sala.properties.id}-school-icon`,
-              type: "symbol",
-              source: `${sala.properties.id}-source`,
-              layout: {
-                "icon-image": "school",
-                "icon-size": 1.5, // Tamanho do ícone
-                "text-field": `${sala.properties.name}`,
-                "text-variable-anchor": ["top"],
-                "text-radial-offset": 1,
-                "text-justify": "auto",
-              },
-              paint: {},
-            });
-          } else if (sala.properties.ref) {
-            this.map.addLayer({
-              id: `${sala.properties.id}-school-icon`,
-              type: "symbol",
-              source: `${sala.properties.id}-source`,
-              layout: {
-                "icon-image": "school",
-                "icon-size": 0.5, // Tamanho do ícone
-                "text-field": `${sala.properties.ref}`,
-                "text-variable-anchor": ["top"],
-                "text-radial-offset": 1,
-                "text-justify": "auto",
-              },
-              paint: {},
-            });
-          }
         }
       });
     },
@@ -119,6 +88,29 @@ export default {
                 "fill-color": "#fefee2",
               },
             });
+            if (sala.properties.name) {
+              this.map.addLayer({
+                id: `${sala.properties.id}-name`,
+                type: "symbol",
+                source: `${sala.properties.id}-source`,
+                layout: {
+                  "text-field": `${sala.properties.name}`,
+                  "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+                  "text-size": 12,
+                },
+              });
+            } else if (sala.properties.ref) {
+              this.map.addLayer({
+                id: `${sala.properties.id}-ref`,
+                type: "symbol",
+                source: `${sala.properties.id}-source`,
+                layout: {
+                  "text-field": `${sala.properties.ref}`,
+                  "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+                  "text-size": 12,
+                },
+              });
+            }
           }
         }
       });
@@ -136,6 +128,38 @@ export default {
                 paint: {
                   "fill-color": "#D4EDFF",
                 },
+              });
+            }
+
+            if (sala.properties.name) {
+              this.map.addLayer({
+                id: `${sala.properties.id}-school-icon`,
+                type: "symbol",
+                source: `${sala.properties.id}-source`,
+                layout: {
+                  "icon-image": "school",
+                  "icon-size": 1.5, // Tamanho do ícone
+                  "text-field": `${sala.properties.name}`,
+                  "text-variable-anchor": ["top"],
+                  "text-radial-offset": 1,
+                  "text-justify": "auto",
+                },
+                paint: {},
+              });
+            } else if (sala.properties.ref) {
+              this.map.addLayer({
+                id: `${sala.properties.id}-school-icon`,
+                type: "symbol",
+                source: `${sala.properties.id}-source`,
+                layout: {
+                  "icon-image": "school",
+                  "icon-size": 0.5, // Tamanho do ícone
+                  "text-field": `${sala.properties.ref}`,
+                  "text-variable-anchor": ["top"],
+                  "text-radial-offset": 1,
+                  "text-justify": "auto",
+                },
+                paint: {},
               });
             }
           }
