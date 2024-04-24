@@ -95,8 +95,13 @@ export default {
                 source: `${sala.properties.id}-source`,
                 layout: {
                   "text-field": `${sala.properties.name}`,
-                  "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-                  "text-size": 12,
+                  "text-size": 14,
+                  "text-max-width": 5,
+                },
+                paint: {
+                  "text-color": "#667",
+                  "text-halo-color": "#ffffff",
+                  "text-halo-width": 1,
                 },
               });
             } else if (sala.properties.ref) {
@@ -106,8 +111,13 @@ export default {
                 source: `${sala.properties.id}-source`,
                 layout: {
                   "text-field": `${sala.properties.ref}`,
-                  "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-                  "text-size": 12,
+                  "text-size": 14,
+                  "text-max-width": 5,
+                },
+                paint: {
+                  "text-color": "#667",
+                  "text-halo-color": "#ffffff",
+                  "text-halo-width": 1,
                 },
               });
             }
@@ -141,10 +151,18 @@ export default {
                   "icon-size": 1.5, // Tamanho do ícone
                   "text-field": `${sala.properties.name}`,
                   "text-variable-anchor": ["top"],
-                  "text-radial-offset": 1,
                   "text-justify": "auto",
+                  "text-max-width": 9,
+                  "text-offset": [0, 1.5],
+                  "text-padding": 2,
+                  "text-size": 12,
                 },
-                paint: {},
+                paint: {
+                  "text-color": "#667",
+                  "text-halo-blur": 0.5,
+                  "text-halo-color": "#ffffff",
+                  "text-halo-width": 1,
+                },
               });
             } else if (sala.properties.ref) {
               this.map.addLayer({
@@ -156,10 +174,18 @@ export default {
                   "icon-size": 0.5, // Tamanho do ícone
                   "text-field": `${sala.properties.ref}`,
                   "text-variable-anchor": ["top"],
-                  "text-radial-offset": 1,
                   "text-justify": "auto",
+                  "text-max-width": 9,
+                  "text-offset": [0, 1.5],
+                  "text-padding": 2,
+                  "text-size": 12,
                 },
-                paint: {},
+                paint: {
+                  "text-color": "#667",
+                  "text-halo-blur": 0.5,
+                  "text-halo-color": "#ffffff",
+                  "text-halo-width": 1,
+                },
               });
             }
           }
