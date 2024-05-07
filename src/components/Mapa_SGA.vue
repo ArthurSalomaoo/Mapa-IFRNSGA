@@ -69,8 +69,6 @@ export default {
               "line-width": 2,
             },
           });
-
-          //adiciona o nome a sala e se a sala não tiver o nome, ele adiciona o ref
         }
       });
     },
@@ -88,37 +86,31 @@ export default {
                 "fill-color": "#fefee2",
               },
             });
+
+            //adiciona o nome a sala e se a sala não tiver o nome, ele adiciona o ref
             if (sala.properties.name) {
               this.map.addLayer({
-                id: `${sala.properties.id}-name`,
+                id: `${sala.properties.id}-school-icon`,
                 type: "symbol",
                 source: `${sala.properties.id}-source`,
                 layout: {
                   "text-field": `${sala.properties.name}`,
-                  "text-size": 14,
-                  "text-max-width": 5,
+                  "text-radial-offset": 1,
+                  "text-justify": "auto",
                 },
-                paint: {
-                  "text-color": "#667",
-                  "text-halo-color": "#ffffff",
-                  "text-halo-width": 1,
-                },
+                paint: {},
               });
             } else if (sala.properties.ref) {
               this.map.addLayer({
-                id: `${sala.properties.id}-ref`,
+                id: `${sala.properties.id}-school-icon`,
                 type: "symbol",
                 source: `${sala.properties.id}-source`,
                 layout: {
                   "text-field": `${sala.properties.ref}`,
-                  "text-size": 14,
-                  "text-max-width": 5,
+                  "text-radial-offset": 1,
+                  "text-justify": "auto",
                 },
-                paint: {
-                  "text-color": "#667",
-                  "text-halo-color": "#ffffff",
-                  "text-halo-width": 1,
-                },
+                paint: {},
               });
             }
           }
@@ -130,7 +122,7 @@ export default {
       Mapa_IFSGA[0].features.forEach((sala) => {
         if (sala.properties.id) {
           if (sala.properties.numero) {
-            if (this.checarSalaAtiva(sala.properties.numero)) {
+            if (this.checar_sala_ativa(sala.properties.numero)) {
               this.map.addLayer({
                 id: `${sala.properties.id}-layer`,
                 type: "fill",
@@ -139,54 +131,39 @@ export default {
                   "fill-color": "#D4EDFF",
                 },
               });
-            }
 
-            if (sala.properties.name) {
-              this.map.addLayer({
-                id: `${sala.properties.id}-school-icon`,
-                type: "symbol",
-                source: `${sala.properties.id}-source`,
-                layout: {
-                  "icon-image": "school",
-                  "icon-size": 1.5, // Tamanho do ícone
-                  "text-field": `${sala.properties.name}`,
-                  "text-variable-anchor": ["top"],
-                  "text-justify": "auto",
-                  "text-max-width": 9,
-                  "text-offset": [0, 1.5],
-                  "text-padding": 2,
-                  "text-size": 12,
-                },
-                paint: {
-                  "text-color": "#667",
-                  "text-halo-blur": 0.5,
-                  "text-halo-color": "#ffffff",
-                  "text-halo-width": 1,
-                },
-              });
-            } else if (sala.properties.ref) {
-              this.map.addLayer({
-                id: `${sala.properties.id}-school-icon`,
-                type: "symbol",
-                source: `${sala.properties.id}-source`,
-                layout: {
-                  "icon-image": "school",
-                  "icon-size": 0.5, // Tamanho do ícone
-                  "text-field": `${sala.properties.ref}`,
-                  "text-variable-anchor": ["top"],
-                  "text-justify": "auto",
-                  "text-max-width": 9,
-                  "text-offset": [0, 1.5],
-                  "text-padding": 2,
-                  "text-size": 12,
-                },
-                paint: {
-                  "text-color": "#667",
-                  "text-halo-blur": 0.5,
-                  "text-halo-color": "#ffffff",
-                  "text-halo-width": 1,
-                },
-              });
+              //adiciona o nome a sala e se a sala não tiver o nome, ele adiciona o ref
+              if (sala.properties.name) {
+                this.map.addLayer({
+                  id: `${sala.properties.id}-school-icon`,
+                  type: "symbol",
+                  source: `${sala.properties.id}-source`,
+                  layout: {
+                    "icon-image": "school",
+                    "icon-size": 1.5, // Tamanho do ícone
+                    "text-field": `${sala.properties.name}`,
+                    "text-variable-anchor": ["top"],
+                    "text-radial-offset": 1,
+                    "text-justify": "auto",
+                  },
+                  paint: {},
+                });
+              } else if (sala.properties.ref) {
+                this.map.addLayer({
+                  id: `${sala.properties.id}-school-icon`,
+                  type: "symbol",
+                  source: `${sala.properties.id}-source`,
+                  layout: {
+                    "icon-image": "school",
+                    "icon-size": 0.5, // Tamanho do ícone
+                    "text-field": `${sala.properties.ref}`,
+                    "text-variable-anchor": ["top"],
+                    "text-radial-offset": 1,
+                    "text-justify": "auto",
+                  },
+                  paint: {},
+                });
+              }
             }
           }
         }
@@ -195,10 +172,36 @@ export default {
     },
 
     //método que chega se a sala está ativa, ele puxa a informação da api do ssc
-    checarSalaAtiva(salaNumero) {
+    checar_sala_ativa(salaNumero) {
       for (let i = 0; i < this.dadosApi.length; i++) {
         if (this.dadosApi[i].numero == salaNumero)
           return this.dadosApi[i].ativa;
+      }
+    },
+
+    // Método que recebe o número da sala para mudar a cor da mesma, ainda não fiz a parte de mudar a cor condicionalmente
+    mudar_cor_sala(sala_numero, on_off) {
+      console.log('oi')
+      console.log('on_off', on_off);
+      console.log('numero', sala_numero)
+      if (on_off) {
+        Mapa_IFSGA[0].features.forEach((sala) => {
+          if (sala.properties.numero == sala_numero)
+            this.map.setPaintProperty(
+              `${sala.properties.id}-layer`,
+              "fill-color",
+              "#D4EDFF"
+            );
+        });
+      } else if (!on_off) {
+        Mapa_IFSGA[0].features.forEach((sala) => {
+          if (sala.properties.numero == sala_numero)
+            this.map.setPaintProperty(
+              `${sala.properties.id}-layer`,
+              "fill-color",
+              "#faafee"
+            );
+        });
       }
     },
 
@@ -211,9 +214,12 @@ export default {
         this.map.on("mouseleave", `${sala.properties.id}-layer`, () => {
           this.map.getCanvas().style.cursor = "";
         });
+
         //função que pega o clique do usuário no leyer
         this.map.on("click", `${sala.properties.id}-layer`, () => {
-          console.log("click!");
+          //quando o usuário clicar na sala, chamo a função do arquivo mqtt e passo o numero da sala
+          this.$emit("exibir_dados", sala.properties.numero);
+          console.log(sala.properties.id);
         });
       });
     },
