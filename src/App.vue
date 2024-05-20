@@ -15,10 +15,11 @@ export default {
 
   methods: {
     mudar_cor_sala(sala_numero, on_off) {
+      // Chama o método mudar_cor_sala() do componente Mapa_SGA.vue e envia o número da sala e se ela está on ou off
       this.$refs.Mapa_SGA.mudar_cor_sala(sala_numero, on_off);
     },
     exibir_dados(sala_numero) {
-      // Chama a função exibir_dados() do componente MQTT_Conexao
+      // Chama o método exibir_dados() do componente MQTT_Conexao.vue e envia o número da sala
       this.$refs.MQTT_Conexao.exibir_dados(sala_numero);
     },
   },

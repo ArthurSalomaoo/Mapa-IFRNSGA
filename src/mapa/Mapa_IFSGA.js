@@ -1,3 +1,7 @@
+/*
+Utilizamos esse arquivo pois o JS não aceita o GeoJson, então é mais fácil ter esse arquivo.
+*/
+
 const mapa = [{
     "type": "FeatureCollection",
     "generator": "JOSM",
@@ -485,7 +489,8 @@ const mapa = [{
                 "indoor": "room",
                 "id": "21",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero": "64"
             },
             "geometry": {
                 "type": "Polygon",
@@ -556,7 +561,8 @@ const mapa = [{
                 "indoor": "room",
                 "id": "22",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"65"
             },
             "geometry": {
                 "type": "Polygon",
@@ -960,7 +966,8 @@ const mapa = [{
                 "ref": "T.I.",
                 "indoor": "room",
                 "level": "0",
-                "id": "52"
+                "id": "52",
+                "numero":"28"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1277,7 +1284,8 @@ const mapa = [{
                 "name": "LAB.QUÍMICA",
                 "level": "0",
                 "id": "72",
-                "amenity": "school"
+                "amenity": "school",
+                "numero": "53"
             },
             "geometry": {
                 "type": "Polygon",
@@ -1510,7 +1518,8 @@ const mapa = [{
                 "id": "4",
                 "level": "0",
                 "name": "GEATIC",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"70"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2118,7 +2127,8 @@ const mapa = [{
                 "id": "2",
                 "name": "LAB.LÍNGUAS",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero": "68"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2356,7 +2366,8 @@ const mapa = [{
                 "indoor": "room",
                 "id": "75",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"50"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2571,7 +2582,8 @@ const mapa = [{
                 "name": "ETEP",
                 "level": "0",
                 "id": "38",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"14"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2679,7 +2691,8 @@ const mapa = [{
                 "id": "19",
                 "indoor": "room",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"74"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2782,7 +2795,8 @@ const mapa = [{
                 "id": "70",
                 "name": "LAB INFO I",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero": "46"
             },
             "geometry": {
                 "type": "Polygon",
@@ -2929,7 +2943,8 @@ const mapa = [{
                 "name": "SECRETARIA ACADÊMICA",
                 "level": "0",
                 "id": "41",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"12"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3584,7 +3599,8 @@ const mapa = [{
                 "id": "13",
                 "indoor": "room",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"58"
             },
             "geometry": {
                 "type": "Polygon",
@@ -3719,7 +3735,8 @@ const mapa = [{
                 "name": "LAB.BIOLOGIA",
                 "indoor": "room",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero": "51"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4164,7 +4181,8 @@ const mapa = [{
                 "indoor": "room",
                 "id": "103",
                 "level": "0",
-                "amenity": "school"
+                "amenity": "school",
+                "numero": "48"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4201,7 +4219,8 @@ const mapa = [{
                 "name": "LABMAKER",
                 "level": "0",
                 "id": "3",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"69"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4262,7 +4281,7 @@ const mapa = [{
         {
             "type": "Feature",
             "properties": {
-                "numero": "10",
+                "numero": "21",
                 "indoor": "room",
                 "name": "LAMAC",
                 "id": "32",
@@ -4413,7 +4432,8 @@ const mapa = [{
                 "indoor": "room",
                 "level": "0",
                 "ref": "LAB. DE CA E TUTORIA DE DESENHO",
-                "id": "12"
+                "id": "12",
+                "numero":"74"
             },
             "geometry": {
                 "type": "Polygon",
@@ -4449,7 +4469,8 @@ const mapa = [{
                 "indoor": "room",
                 "level": "0",
                 "id": "27",
-                "amenity": "school"
+                "amenity": "school",
+                "numero":"45"
             },
             "geometry": {
                 "type": "Polygon",

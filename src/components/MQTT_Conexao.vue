@@ -1,27 +1,13 @@
-<template>
-  <!-- Parte principal de como funciona as coisas na exibição -->
-  <button
-    type="success"
-    size="small"
-    class="conn-btn"
-    style="margin-right: 20px"
-    :disabled="client.connected"
-    @click="createConnection"
-    :loading="connecting"
-  >
-    <!-- mostrando o estado da conexao na tela -->
-    <h1 class="Estado-conexão">
-      Estado da Conexão: {{ client.connected ? "Conectado" : "Conectar" }}
-    </h1>
-  </button>
 
-  <!-- exibindo mensagens na tela -->
-  <h2>Tópico Status: {{ status }}</h2>
-  <h2>Tópico Acesso: {{ acesso }}</h2>
-  <h2 @click="mudar_cor_sala">teste</h2>
-  <!-- Acima termina como funciona a exibição -->
+/*
+  Esse arquivo se conecta com o broker e recebe as mensagens do mesmo e exibe as informações da sala
+*/
+
+
+<template>
+
   <div id="div-info" v-if="div_dados">
-    <h2>oi {{numero_sala_clicada}}</h2>
+    <h2>Sala {{numero_sala_clicada}}</h2>
   </div>
 </template>
 
@@ -52,8 +38,8 @@ export default {
       },
       // Lista de tópicos de inscrição MQTT
       subscriptions: [
-        { topic: "ssc/443/acesso", qos: 0 },
-        { topic: "ssc/443/status", qos: 0 },
+        //{ topic: "ssc/443/acesso", qos: 0 },
+        { topic: "ssc/+/status", qos: 0 },
       ],
       // Configurações para publicação MQTT
       publish: {
@@ -118,18 +104,21 @@ export default {
 
             // recebendo as mensagens dos topicos
             this.client.on("message", (topic, message) => {
-              if (topic === "ssc/443/status") {
+              let n_sala= topic.split("/")[1];
+              // if (topic === "ssc/443/status") {
                 this.status = message;
                 console.log(this.status);
                 console.log(
-                  `Mensagem Recebida do tópico "ssc/443/status": ${message}`
+                  `Mensagem Recebida do tópico "ssc/${n_sala}/status": ${message}`
                 );
+                if(n_sala==443) n_sala=10;
                 if (message == "true") {
-                  this.mudar_cor_sala(10, true);
+                  this.mudar_cor_sala(n_sala, true);
                 } else if(message == "false"){
-                  this.mudar_cor_sala(10, false)
+                  this.mudar_cor_sala(n_sala, false)
                 }
-              } else if (topic === "ssc/443/acesso") {
+              // } else 
+              if (topic === "ssc/443/acesso") {
                 this.acesso = message;
                 console.log(this.acesso);
                 console.log(
@@ -214,7 +203,7 @@ export default {
 <style scoped>
 #div-info {
   position: absolute;
-  margin-top: 20px;
+  margin-top: 150px;
   height: 400px;
   width: 200px;
   background-color: palegoldenrod;
