@@ -3,11 +3,13 @@
   Esse arquivo se conecta com o broker e recebe as mensagens do mesmo e exibe as informações da sala
 */
 
-
 <template>
-
   <div id="div-info" v-if="div_dados">
-    <h2>Sala {{numero_sala_clicada}}</h2>
+    <h2>Sala {{ numero_sala_clicada }}</h2>
+    <p>Temperatura da sala: {{ sala_temp }}</p>
+    <p>Luz: {{sala_luz}}</p>
+    <p>Tem pessoas na sala? {{sala_com_pessoas}}</p>
+    <p>Sala ativa: {{sala_ativa}}</p>
   </div>
 </template>
 
@@ -21,8 +23,13 @@ export default {
     let protocol = "wss";
 
     return {
-      // Configurações de conexão MQTT
+      sala_luz: null,
+      sala_com_pessoas: null,
+      sala_ativa: null,
+      sala_temp: null,
       numero_sala_clicada: null,
+
+      // Configurações de conexão MQTT
       connection: {
         protocol,
         host,
@@ -104,20 +111,20 @@ export default {
 
             // recebendo as mensagens dos topicos
             this.client.on("message", (topic, message) => {
-              let n_sala= topic.split("/")[1];
+              let n_sala = topic.split("/")[1];
               // if (topic === "ssc/443/status") {
-                this.status = message;
-                console.log(this.status);
-                console.log(
-                  `Mensagem Recebida do tópico "ssc/${n_sala}/status": ${message}`
-                );
-                if(n_sala==443) n_sala=10;
-                if (message == "true") {
-                  this.mudar_cor_sala(n_sala, true);
-                } else if(message == "false"){
-                  this.mudar_cor_sala(n_sala, false)
-                }
-              // } else 
+              this.status = message;
+              console.log(this.status);
+              console.log(
+                `Mensagem Recebida do tópico "ssc/${n_sala}/status": ${message}`
+              );
+              if (n_sala == 443) n_sala = 10;
+              if (message == "true") {
+                this.mudar_cor_sala(n_sala, true);
+              } else if (message == "false") {
+                this.mudar_cor_sala(n_sala, false);
+              }
+              // } else
               if (topic === "ssc/443/acesso") {
                 this.acesso = message;
                 console.log(this.acesso);
@@ -182,10 +189,18 @@ export default {
       }
     },
     // Método que exibir as informações da sala que o usuário clicou
-    exibir_dados(sala_numero) {
+    exibir_modal(sala_numero) {
       this.div_dados = !this.div_dados;
       console.log("foi", sala_numero);
-      this.numero_sala_clicada = sala_numero
+      this.numero_sala_clicada = sala_numero;
+      this.exibir_dados_sala(10, true, true, true)
+    },
+    exibir_dados_sala(sala_temp, sala_ativa, sala_com_pessoas, sala_luz){
+      this.sala_temp = sala_temp
+      this.sala_ativa = sala_ativa
+      this.sala_com_pessoas = sala_com_pessoas
+      this.sala_luz = sala_luz
+
     },
 
     // Método que chama o método mudar_cor_sala do compunente Mapa_SGA
