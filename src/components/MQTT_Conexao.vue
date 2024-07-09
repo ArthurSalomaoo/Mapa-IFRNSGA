@@ -4,14 +4,16 @@
 */
 
 <template>
-  <div id="div-info" v-if="div_dados">
-    <h2>Sala {{ numero_sala_clicada }}</h2>
+  <div id="div-info" v-if="modal">
+    <h2>Número da sala: {{ numero_sala_clicada }}</h2>
     <p>Temperatura da sala: {{ sala_temp }}</p>
-    <p>Luz: {{sala_luz}}</p>
-    <p>Tem pessoas na sala? {{sala_com_pessoas}}</p>
-    <p>Sala ativa: {{sala_ativa}}</p>
+    <p>Luz: {{ sala_luz }}</p>
+    <p>Tem pessoas na sala? {{ sala_com_pessoas }}</p>
+    <p>Sala ativa: {{ sala_ativa }}</p>
+    <button id="fecharModal" @click="fecharModal">Fechar</button>
   </div>
 </template>
+
 
 
 <script>
@@ -69,7 +71,7 @@ export default {
       connecting: false,
       // Contador de tentativas de reconexão
       retryTimes: 0,
-      div_dados: false,
+      modal: false,
     };
   },
   methods: {
@@ -190,17 +192,20 @@ export default {
     },
     // Método que exibir as informações da sala que o usuário clicou
     exibir_modal(sala_numero) {
-      this.div_dados = !this.div_dados;
+      this.modal = true;
       console.log("foi", sala_numero);
       this.numero_sala_clicada = sala_numero;
-      this.exibir_dados_sala(10, true, true, true)
-    },
-    exibir_dados_sala(sala_temp, sala_ativa, sala_com_pessoas, sala_luz){
-      this.sala_temp = sala_temp
-      this.sala_ativa = sala_ativa
-      this.sala_com_pessoas = sala_com_pessoas
-      this.sala_luz = sala_luz
 
+      this.exibir_dados_sala(10, true, true, true);
+    },
+    exibir_dados_sala(sala_temp, sala_ativa, sala_com_pessoas, sala_luz) {
+      this.sala_temp = sala_temp;
+      this.sala_ativa = sala_ativa;
+      this.sala_com_pessoas = sala_com_pessoas;
+      this.sala_luz = sala_luz;
+    },
+    fecharModal() {
+      this.modal = false;
     },
 
     // Método que chama o método mudar_cor_sala do compunente Mapa_SGA
@@ -220,7 +225,29 @@ export default {
   position: absolute;
   margin-top: 150px;
   height: 400px;
-  width: 200px;
-  background-color: palegoldenrod;
+  width: 250px;
+  background-color: white;
+  box-shadow: 2px 2px 10px black;
+}
+
+#div-info > h2 {
+  margin: 15px 5px;
+}
+
+#div-info > p {
+  margin: 5px 0 10px 20px;
+  text-align: left;
+}
+
+#fecharModal{
+margin-top:200px;
+  background-color: rgb(250, 250, 250);
+  border: none;
+  box-shadow: 2px 2px 3px rgb(50, 50, 50);
+  width: 70px;
+  height: 25px;
+}
+#fecharModal:hover{
+  cursor: pointer;
 }
 </style>

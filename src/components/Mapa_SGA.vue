@@ -6,16 +6,17 @@
   <div>
     <div id="map"></div>
     <div id="level-controls">
-      <button
-        v-for="level in availableLevels"
-        :key="level"
-        @click="setLevel(level)"
-      >
+      <button v-for="level in availableLevels" :key="level" @click="setLevel(level)">
         {{ level }}
       </button>
     </div>
+    <div id="search-controls">
+      <input v-model="searchQuery" placeholder="Pesquisar sala pelo nome" />
+      <button @click="pesquisarSala">Pesquisar</button>
+    </div>
   </div>
 </template>
+
 
 <script>
 import { Map } from "maplibre-gl";
@@ -346,7 +347,6 @@ export default {
         });
       });
     },
-
     atualizarNiveis() {
       const levels = new Set();
       Mapa_IFSGA[0].features.forEach((sala) => {
@@ -373,6 +373,53 @@ export default {
       this.carregar_layer_sala_off();
       this.carregar_layer_sala_on();
     },
+
+pesquisarSala() {
+  let salaEncontrada = Mapa_IFSGA[0].features.find(
+    (sala) => sala.properties.name && sala.properties.name.toLowerCase() === this.searchQuery.toLowerCase()
+  );
+
+  if (!salaEncontrada) {
+    salaEncontrada = Mapa_IFSGA[0].features.find(
+      (sala) => sala.properties.ref && sala.properties.ref.toLowerCase() === this.searchQuery.toLowerCase()
+    );
+  }
+
+  if (salaEncontrada) {
+    this.centralizarEShowModal(salaEncontrada);
+  } else {
+    alert("Sala não encontrada");
+  }
+},
+
+centralizarEShowModal(sala) {
+  const coordinates = sala.geometry.coordinates[0];
+  if (Array.isArray(coordinates) && coordinates.length > 0) {
+    const center = this.calcularCentro(coordinates);
+    this.map.flyTo({
+      center: center,
+      zoom: 20,
+    });
+
+    // Emitir evento para exibir modal
+    this.$emit("exibir_modal", sala.properties.name || sala.properties.ref);
+  } else {
+    console.error("As coordenadas da sala não estão no formato esperado:", coordinates);
+  }
+},
+
+calcularCentro(coordinates) {
+  let lngSum = 0, latSum = 0;
+  coordinates.forEach(coord => {
+    lngSum += coord[0];
+    latSum += coord[1];
+  });
+  const lng = lngSum / coordinates.length;
+  const lat = latSum / coordinates.length;
+  return [lng, lat];
+}
+
+  
   },
 };
 </script>
@@ -394,5 +441,14 @@ export default {
 #level-controls button {
   display: block;
   margin-bottom: 5px;
+}
+#search-controls {
+  position: absolute;
+  top: 50px;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  gap: 5px;
 }
 </style>
