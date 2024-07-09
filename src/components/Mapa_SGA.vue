@@ -6,7 +6,11 @@
   <div>
     <div id="map"></div>
     <div id="level-controls">
-      <button v-for="level in availableLevels" :key="level" @click="setLevel(level)">
+      <button
+        v-for="level in availableLevels"
+        :key="level"
+        @click="setLevel(level)"
+      >
         {{ level }}
       </button>
     </div>
@@ -374,52 +378,58 @@ export default {
       this.carregar_layer_sala_on();
     },
 
-pesquisarSala() {
-  let salaEncontrada = Mapa_IFSGA[0].features.find(
-    (sala) => sala.properties.name && sala.properties.name.toLowerCase() === this.searchQuery.toLowerCase()
-  );
+    pesquisarSala() {
+      let salaEncontrada = Mapa_IFSGA[0].features.find(
+        (sala) =>
+          sala.properties.name &&
+          sala.properties.name.toLowerCase() === this.searchQuery.toLowerCase()
+      );
 
-  if (!salaEncontrada) {
-    salaEncontrada = Mapa_IFSGA[0].features.find(
-      (sala) => sala.properties.ref && sala.properties.ref.toLowerCase() === this.searchQuery.toLowerCase()
-    );
-  }
+      if (!salaEncontrada) {
+        salaEncontrada = Mapa_IFSGA[0].features.find(
+          (sala) =>
+            sala.properties.ref &&
+            sala.properties.ref.toLowerCase() === this.searchQuery.toLowerCase()
+        );
+      }
 
-  if (salaEncontrada) {
-    this.centralizarEShowModal(salaEncontrada);
-  } else {
-    alert("Sala não encontrada");
-  }
-},
+      if (salaEncontrada) {
+        this.centralizarEShowModal(salaEncontrada);
+      } else {
+        alert("Sala não encontrada");
+      }
+    },
 
-centralizarEShowModal(sala) {
-  const coordinates = sala.geometry.coordinates[0];
-  if (Array.isArray(coordinates) && coordinates.length > 0) {
-    const center = this.calcularCentro(coordinates);
-    this.map.flyTo({
-      center: center,
-      zoom: 20,
-    });
+    centralizarEShowModal(sala) {
+      const coordinates = sala.geometry.coordinates[0];
+      if (Array.isArray(coordinates) && coordinates.length > 0) {
+        const center = this.calcularCentro(coordinates);
+        this.map.flyTo({
+          center: center,
+          zoom: 20,
+        });
 
-    // Emitir evento para exibir modal
-    this.$emit("exibir_modal", sala.properties.name || sala.properties.ref);
-  } else {
-    console.error("As coordenadas da sala não estão no formato esperado:", coordinates);
-  }
-},
+        // Emitir evento para exibir modal
+        this.$emit("exibir_modal", sala.properties.name || sala.properties.ref);
+      } else {
+        console.error(
+          "As coordenadas da sala não estão no formato esperado:",
+          coordinates
+        );
+      }
+    },
 
-calcularCentro(coordinates) {
-  let lngSum = 0, latSum = 0;
-  coordinates.forEach(coord => {
-    lngSum += coord[0];
-    latSum += coord[1];
-  });
-  const lng = lngSum / coordinates.length;
-  const lat = latSum / coordinates.length;
-  return [lng, lat];
-}
-
-  
+    calcularCentro(coordinates) {
+      let lngSum = 0,
+        latSum = 0;
+      coordinates.forEach((coord) => {
+        lngSum += coord[0];
+        latSum += coord[1];
+      });
+      const lng = lngSum / coordinates.length;
+      const lat = latSum / coordinates.length;
+      return [lng, lat];
+    },
   },
 };
 </script>
@@ -430,25 +440,82 @@ calcularCentro(coordinates) {
   padding: 0;
   height: 100vh;
 }
+
 #level-controls {
+  width: 35px;
   position: absolute;
-  top: 10px;
+  top: 40px;
   right: 10px;
   background: white;
   padding: 10px;
   border-radius: 4px;
+  box-shadow: 2px 2px 3px rgb(50, 50, 50);
 }
 #level-controls button {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+#level-controls button:hover {
+  cursor: pointer;
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+#level-controls button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5);
+}
+#level-controls button.active {
+  background-color: #28a745;
 }
 #search-controls {
   position: absolute;
-  top: 50px;
+  top: 40px;
+  left: 10px;
   background: white;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   gap: 5px;
+  z-index: 10;
+}
+#search-controls > button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  width: 80px;
+  height: 35px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+}
+#search-controls > input {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  height: 35px;
+  padding-left: 10px;
+  font-size: 14px;
+}
+#search-controls > button:hover {
+  cursor: pointer;
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+#search-controls > button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5);
 }
 </style>

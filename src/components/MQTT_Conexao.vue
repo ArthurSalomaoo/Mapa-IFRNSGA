@@ -223,31 +223,54 @@ export default {
 <style scoped>
 #div-info {
   position: absolute;
-  margin-top: 150px;
+  top: 150px;
+  left: 10px;
   height: 400px;
   width: 250px;
   background-color: white;
-  box-shadow: 2px 2px 10px black;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  z-index: 10;
+  padding: 10px;
 }
 
 #div-info > h2 {
   margin: 15px 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
 }
 
 #div-info > p {
   margin: 5px 0 10px 20px;
   text-align: left;
+  font-size: 14px;
+  color: #555;
 }
 
-#fecharModal{
-margin-top:200px;
-  background-color: rgb(250, 250, 250);
+#fecharModal {
+  margin-top: 200px;
+  background-color: #007bff;
+  color: white;
   border: none;
-  box-shadow: 2px 2px 3px rgb(50, 50, 50);
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   width: 70px;
-  height: 25px;
+  height: 35px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
 }
-#fecharModal:hover{
+
+#fecharModal:hover {
   cursor: pointer;
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
+
+#fecharModal:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
 </style>
