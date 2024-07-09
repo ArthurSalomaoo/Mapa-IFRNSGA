@@ -1,6 +1,6 @@
 <template>
   <MQTT_Conexao ref="MQTT_Conexao" @mudar_cor_sala="mudar_cor_sala" />
-  <Mapa_SGA ref="Mapa_SGA" @exibir_dados="exibir_dados" />
+  <Mapa_SGA ref="Mapa_SGA" @exibir_modal="exibir_modal" />
 </template>
 
 <script>
@@ -18,9 +18,10 @@ export default {
       // Chama o método mudar_cor_sala() do componente Mapa_SGA.vue e envia o número da sala e se ela está on ou off
       this.$refs.Mapa_SGA.mudar_cor_sala(sala_numero, on_off);
     },
-    exibir_dados(sala_numero) {
+    exibir_modal(sala_numero) {
       // Chama o método exibir_dados() do componente MQTT_Conexao.vue e envia o número da sala
-      this.$refs.MQTT_Conexao.exibir_dados(sala_numero);
+      console.log('oi')
+      this.$refs.MQTT_Conexao.exibir_modal(sala_numero);
     },
   },
 };
