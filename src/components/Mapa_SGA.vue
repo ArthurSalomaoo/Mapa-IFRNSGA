@@ -345,7 +345,7 @@ export default {
 
         // Método que pega o clique do usuário no layer
         this.map.on("click", `${sala.properties.id}-layer`, () => {
-          // quando o usuário clicar na sala, chamo a função do arquivo mqtt e passo o número da sala
+          // quando o usuário clicar na sala, chamo a função do arquivo mqtt e passo o número da sala.
           this.$emit("exibir_modal", sala.properties.numero);
           console.log(sala.properties.id);
         });
